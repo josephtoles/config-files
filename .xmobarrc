@@ -1,0 +1,20 @@
+Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+        , borderColor = "black"
+        , bgColor = "black"
+        , fgColor = "#D8D8D8"
+        , position = TopW L 96
+        , commands = [ Run Cpu ["-L","3","-H","50","--normal","green","--high","red", "-p", "2"] 10
+                        , Run Memory ["-t","Mem <usedratio>", "-p", "3"] 10
+                        , Run Swap ["-t", "Swap <usedratio>"] 10
+                        , Run Com "uname" ["-s","-r"] "" 36000
+                        , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                        , Run StdinReader
+                        , Run BatteryP ["BAT0", "BAT1"] ["-t", "<left> <timeleft><acstatus>", "--", "-o", "<fc=red>-</fc>", "-O", "<fc=green>+</fc>", "-i", " "] 1
+                        , Run Locks
+                        , Run DynNetwork [] 10
+                        , Run Wireless "wlan0" ["-t", "<essid> <quality>"] 10
+                        ]
+        , sepChar = "%"
+        , alignSep = "}{"
+        , template = "%StdinReader% %locks%}{%wlan0wi% | %cpu% | %memory% | %swap% | %date% | %battery%"
+        }
