@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [ $GDMSESSION != 'cinnamon' ]
+then
+    # Disable mouse tap to click
+    synclient TapButton1=0
+
+    # Load resources
+    xrdb - merge .Xresources
+
+    # Set up an icon tray
+    trayer --edge top --align right --SetDockType true --SetPartialStrut true \
+     --expand true --width 4 --transparent true --tint 0x000000 --height 20 &
+
+    # CapsLock to Ctrl
+    xmodmap -e "remove Lock = Caps_Lock"
+    xmodmap -e "keysym Caps_Lock = Control_L"
+    xmodmap -e "add Control = Control_L"
+
+    # Switch windows key with left alt
+    xmodmap -e "remove mod1 = Alt_L"
+    xmodmap -e "remove mod4 = Super_L"
+    xmodmap -e "add mod1 = Super_L"
+    xmodmap -e "add mod4 = Alt_L"
+
+    # Set the background color
+    #xsetroot -solid midnightblue
+
+    # Fire up apps
+    xscreensaver -no-splash &
+    /home/joseph/bin/start-emacs-server.sh &
+    #gajim &
+
+    # Works
+    if [ -x /usr/bin/nm-applet ] ; then
+       nm-applet --sm-disable &
+    fi
+
+    # ibus daemon
+
+    exec xmonad
+fi
